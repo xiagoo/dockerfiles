@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
         && rm -r /var/lib/apt/lists/*
 
 # 安装 PECL 拓展，这里我们安装的是Redis
-RUN wget https://pecl.php.net/get/redis-4.0.0.tgz -O /home/redis.tgz
+RUN wget http://pecl.php.net/get/redis-4.0.0.tgz -O /home/redis.tgz
 RUN pecl install /home/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 # 安装 Composer
