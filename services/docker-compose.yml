@@ -8,6 +8,7 @@ services:
           - ../www:/data/www:rw
           - ./php/php.ini:/usr/local/etc/php/php.ini:ro
           - ./php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
+          - ../logs/services:/data/service_logs/services:rw
         restart: always
         command: php-fpm
 
@@ -15,11 +16,14 @@ services:
         build: ./nginx
         depends_on:
           - php-fpm
+        links:
+          - php-fpm:php-fpm
         volumes:
-          - ../www:/data/www:rw
+          - ../www:/data/www:ro
           - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
           - ../conf/nginx:/etc/nginx/conf.d:ro
           - ../logs/nginx:/data/logs/nginx
+          - ../logs/services:/data/service_logs/services:rw
         ports:
           - "80:80"
           - "8080:8080"

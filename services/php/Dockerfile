@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.0-fpm
 
 # 设置时区
 ENV TZ=Asia/Shanghai
@@ -14,12 +14,16 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libpng-dev \
 		libssl-dev \
-	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+        libldap2-dev \
+	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/  \
 	&& docker-php-ext-install -j$(nproc) gd \
         && docker-php-ext-install zip \
         && docker-php-ext-install pdo_mysql \
         && docker-php-ext-install opcache \
         && docker-php-ext-install mysqli \
+        && docker-php-ext-install sockets \
+        && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+        && docker-php-ext-install ldap \
         && rm -r /var/lib/apt/lists/*
 
 # 安装 PECL 拓展，这里我们安装的是Redis
